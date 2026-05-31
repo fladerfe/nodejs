@@ -5,49 +5,73 @@ import {
   createFighterValid,
   updateFighterValid,
 } from "../middlewares/fighter.validation.middleware.js";
-import { asyncHandler } from "../utils/asyncHandler.js";
 
 const router = Router();
 
 router.get(
   "/",
-  asyncHandler(async (req, res) => {
+  (req, res, next) => {
     res.data = fighterService.getAll();
-  }),
+    next();
+  },
   responseMiddleware
 );
 
 router.get(
   "/:id",
-  asyncHandler(async (req, res) => {
-    res.data = fighterService.getOne(req.params.id);
-  }),
+  (req, res, next) => {
+    try {
+      res.data = fighterService.getOne(req.params.id);
+    } catch (err) {
+      res.err = err;
+    } finally {
+      next();
+    }
+  },
   responseMiddleware
 );
 
 router.post(
   "/",
   createFighterValid,
-  asyncHandler(async (req, res) => {
-    res.data = fighterService.create(req.body);
-  }),
+  (req, res, next) => {
+    try {
+      res.data = fighterService.create(req.body);
+    } catch (err) {
+      res.err = err;
+    } finally {
+      next();
+    }
+  },
   responseMiddleware
 );
 
 router.patch(
   "/:id", 
   updateFighterValid,
-  asyncHandler(async (req, res) => {
-    res.data = fighterService.update(req.params.id, req.body);
-  }),
+  (req, res, next) => {
+    try {
+      res.data = fighterService.update(req.params.id, req.body);
+    } catch (err) {
+      res.err = err;
+    } finally {
+      next();
+    }
+  },
   responseMiddleware
 );
 
 router.delete(
   "/:id", 
-  asyncHandler(async (req, res) => {
-    res.data = fighterService.delete(req.params.id);
-  }),
+  (req, res, next) => {
+    try {
+      res.data = fighterService.delete(req.params.id);
+    } catch (err) {
+      res.err = err;
+    } finally {
+      next();
+    }
+  },
   responseMiddleware
 );
 

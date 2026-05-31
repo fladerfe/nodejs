@@ -5,50 +5,78 @@ import {
   updateUserValid,
 } from "../middlewares/user.validation.middleware.js";
 import { responseMiddleware } from "../middlewares/response.middleware.js";
-import { asyncHandler } from "../utils/asyncHandler.js";
 
 const router = Router();
 
 router.get(
   "/",
-  asyncHandler(async (req, res) => {
-    res.data = userService.getAll();
-  }),
+  (req, res, next) => {
+    try {
+      res.data = userService.getAll();
+    } catch (err) {
+      res.err = err;
+    }
+    next()
+  },
   responseMiddleware
 );
 
 router.get(
   "/:id", 
-  asyncHandler(async (req, res) => {
-    res.data = userService.getOne(req.params.id); 
-  }),
+  (req, res, netx) => {
+    try {
+      res.data = userService.getOne(req.params.id); 
+    } catch (err) {
+      res.err = err;
+    } finally {
+      next();
+    }
+  },
   responseMiddleware
 );
 
 router.post("/", 
-  asyncHandler(async (req, res) => {
-    res.data = userService.create(req.body);
-  }),
+  (req, res, next) => {
+    try {
+      res.data = userService.create(req.body);
+    } catch (err) {
+      res.err = err;
+    } finally {
+      next();
+    }
+  },
   responseMiddleware
 );
 
 router.patch(
   "/:id", 
   updateUserValid, 
-  asyncHandler(async (req, res) => {
-    res.data = userService.update(
-      req.params.id,
-      req.body
-    );
-  }),
+  (req, res, next) => {
+    try {
+      res.data = userService.update(
+        req.params.id,
+        req.body
+      );
+    } catch (err) {
+      res.err = err;
+    } finally {
+      next();
+    }
+  },
   responseMiddleware
 );
 
 router.delete(
   "/:id", 
-  asyncHandler(async (req, res) => {
-    res.data = userService.delete(req.params.id);  
-  }),
+  (req, res, next) => {
+    try {
+      res.data = userService.delete(req.params.id);  
+    } catch (err) {
+      res.err = err;
+    } finally {
+      next();
+    }
+  },
   responseMiddleware
 );
 

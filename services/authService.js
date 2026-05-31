@@ -1,8 +1,8 @@
 import { userService } from "./userService.js";
 
 class AuthService {
-  login({ email, password }) {
-    const user = userService.search({ email });
+  login(data) {
+    const user = userService.search({ email: data.email });
     
     if (!user) {
       const err = new Error("User not found");
@@ -10,12 +10,14 @@ class AuthService {
       throw err;
     }
 
-    if (user.password !== password) {
+    if (user.password !== data.password) {
       const err = new Error("Invalid password");
       err.status = 400;
       throw err;
     }
-    return user;
+    
+    const { password, ...safeUser } = user;
+    return safeUser;
   }
 }
 
