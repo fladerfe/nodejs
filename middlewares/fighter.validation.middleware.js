@@ -61,6 +61,8 @@ const createFighterValid = (req, res, next) => {
 };
 
 const updateFighterValid = (req, res, next) => {
+  const body = req.body
+
   if ("id" in body) {
     return res.status(400).json({
       error: true,

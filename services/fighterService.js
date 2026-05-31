@@ -28,7 +28,7 @@ class FighterService {
       throw err;
     }
 
-    return fightRepository.create(data);
+    return fighterRepository.create(data);
   }
 
   update(id, data) {

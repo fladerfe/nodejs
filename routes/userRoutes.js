@@ -23,7 +23,7 @@ router.get(
 
 router.get(
   "/:id", 
-  (req, res, netx) => {
+  (req, res, next) => {
     try {
       res.data = userService.getOne(req.params.id); 
     } catch (err) {
