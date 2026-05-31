@@ -9,7 +9,9 @@ class FightersService {
     const fighter = fighterRepository.getOne({ id });
 
     if (!fighter) {
-      throw new Error("Fighter not found");
+      const err = new Error("Fighter not found");
+      err.status = 404;
+      throw err;
     }
 
     return fighter;
@@ -21,7 +23,9 @@ class FightersService {
       .find(item => item.name.toLowerCase() === data.name.toLowerCase());
 
     if (existingFighter) {
-      throw new Error("Fighter name already exists");
+      const err = new Error("Fighter name already exists");
+      err.status = 400;
+      throw err;
     }
 
     return fightRepository.create(data);
@@ -31,7 +35,9 @@ class FightersService {
     const fighter = fighterRepository.getOne({ id });
 
     if (!fighter) {
-      throw new Error("Fighter not found");
+      const err = new Error("Fighter not found");
+      err.status = 404;
+      throw err;
     }
 
     if (data.name) {
@@ -40,7 +46,9 @@ class FightersService {
         .find(item => item.name.toLowerCase() === data.name.toLowerCase() && item.id !== id);
 
       if (existingFighter) {
-        throw new Error("Fighter name already exists");
+        const err = new Error("Fighter name already exists");
+        err.status = 400;
+        throw err;
       }
     }
 
@@ -51,7 +59,9 @@ class FightersService {
     const fighter = fighterRepository.getOne({ id });
 
     if (!fighter) {
-      throw new Error("Fighter not found");
+      const err = new Error("Fighter not found");
+      err.status = 404;
+      throw err;
     }
 
     fighterRepository.delete(id);
