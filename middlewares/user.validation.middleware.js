@@ -91,6 +91,13 @@ const updateUserValid = (req, res, next) => {
     });
   }
 
+  if (body.password && typeof body.password !== "string" || body.password.trim().length < 3) {
+    return res.status(400).json({
+      error: true,
+      message: "Password must be at least 3 characters long",
+    });
+  }
+
   next();
 };
 
