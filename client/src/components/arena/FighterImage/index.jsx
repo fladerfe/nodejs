@@ -1,10 +1,10 @@
 export default function FighterImage({fighter}) {
-  const {source, name} = fighter;
+  const {image, name} = fighter;
   
   return (
     <img
       className="fighter-preview___img"
-      src={source}
+      src={image}
       alt={name}
       title={name}
     />

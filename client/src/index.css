@@ -214,6 +214,13 @@ code {
   align-items: center;
 }
 
+.bar-left {
+  transform-origin: left;
+}
+.bar-right {
+  transform-origin: right;
+}
+
 .arena___hit-text {
   position: absolute;
   font-size: 30px;
