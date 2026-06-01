@@ -1,9 +1,19 @@
 import { fightRepository } from "../repositories/fightRepository.js";
 
-class FightersService {
-  // OPTIONAL TODO: Implement methods to work with fights
+class FightService {
+  getAll() {
+    return fightRepository.getAll();
+  }
+
+  getOne(id) {
+    return fightRepository.getOne(id);
+  }
+
+  create(fightData) {
+    return fightRepository.create(fightData);
+  }
 }
 
-const fightersService = new FightersService();
+const fightService = new FightService();
 
-export { fightersService };
+export { fightService };

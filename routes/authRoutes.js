@@ -5,18 +5,16 @@ import { responseMiddleware } from "../middlewares/response.middleware.js";
 const router = Router();
 
 router.post(
-  "/login",
+  "/login", 
   (req, res, next) => {
     try {
-      // TODO: Implement login action (get the user if it exist with entered credentials)
-      res.data = data;
+      res.data = authService.login(req.body);
     } catch (err) {
       res.err = err;
     } finally {
       next();
     }
-  },
-  responseMiddleware
+  }, responseMiddleware
 );
 
 export { router };
