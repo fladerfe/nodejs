@@ -3,6 +3,7 @@ import StatusBar from "./StatusBar";
 import Fighters from "./Fighters";
 import { applyAction, changeAction } from "./arenaEngine";
 import FightResultModal from "./FightResultModal";
+import { createFight } from "../../services/domainRequest/fightRequest";
 
 export default function Arena({ fighter1, fighter2, onBackToMenu, onRestart }) {
   const settings = useMemo(() => ({
@@ -14,6 +15,7 @@ export default function Arena({ fighter1, fighter2, onBackToMenu, onRestart }) {
   const [winner, setWinner] = useState(null);
   const [combatTexts, setCombatTexts] = useState([]);
   const [fightFinished, setFightFinished] = useState(false);
+  const fightLog = useRef([]);
   
   const pressedKeys = useRef(new Set());
   const intervalRef = useRef(null);
@@ -58,8 +60,17 @@ export default function Arena({ fighter1, fighter2, onBackToMenu, onRestart }) {
       : fighter2;
   }
   
-  function handleFinish() {
+  async  function handleFinish() {
     const result = getWinner();
+
+    await createFight({
+      fighter1: fighter1.id,
+      fighter2: fighter2.id,
+      winner: result?.id ?? null,
+      date: Date.now(),
+      log: fightLog.current
+    });
+
     setWinner(result);
     setFightFinished(true);
   }
@@ -95,6 +106,15 @@ export default function Arena({ fighter1, fighter2, onBackToMenu, onRestart }) {
       
       p2.currentHealth = Math.max(0, p2.currentHealth - action1.damage);
       p1.currentHealth = Math.max(0, p1.currentHealth - action2.damage);
+
+      if (action1.damage > 0 || action2.damage > 0) {
+        fightLog.current.push({
+          fighter1Shot: action1.damage,
+          fighter2Shot: action2.damage,
+          fighter1Health: p1.currentHealth,
+          fighter2Health: p2.currentHealth
+        });
+      }
   
       if (action1.effect) {
         const time = Date.now();
