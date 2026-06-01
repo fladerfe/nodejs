@@ -8,6 +8,7 @@ import Arena from '../arena';
 export default function StartScreen() {
     const [loggedIn, setLoggedIn] = useState(isSignedIn());
     const [battleData, setBattleData] = useState(null);
+    const [fightKey, setFightKey] = useState(0);
 
     if (!loggedIn) {
         return <SignInUpPage setIsLoggedIn={setLoggedIn} />;
@@ -25,8 +26,13 @@ export default function StartScreen() {
     if (battleData) {
         return (
             <Arena
+                key={fightKey}
                 fighter1={battleData.fighter1}
                 fighter2={battleData.fighter2}
+                onRestart={() => setFightKey(prev => prev + 1)}
+                onBackToMenu={() => {
+                    setBattleData(null);
+                }}
             />
         );
     }

@@ -2,8 +2,9 @@ import { useState, useEffect, useRef, useMemo } from "react";
 import StatusBar from "./StatusBar";
 import Fighters from "./Fighters";
 import { applyAction, changeAction } from "./arenaEngine";
+import FightResultModal from "./FightResultModal";
 
-export default function Arena({ fighter1, fighter2 }) {
+export default function Arena({ fighter1, fighter2, onBackToMenu, onRestart }) {
   const settings = useMemo(() => ({
     HIT_INTERVAL: 1000,
     CRITICAL_INTERVAL: 10000,
@@ -12,6 +13,7 @@ export default function Arena({ fighter1, fighter2 }) {
 
   const [winner, setWinner] = useState(null);
   const [combatTexts, setCombatTexts] = useState([]);
+  const [fightFinished, setFightFinished] = useState(false);
   
   const pressedKeys = useRef(new Set());
   const intervalRef = useRef(null);
@@ -59,6 +61,7 @@ export default function Arena({ fighter1, fighter2 }) {
   function handleFinish() {
     const result = getWinner();
     setWinner(result);
+    setFightFinished(true);
   }
   function showCombatText(type, position) {
     if (!type) return
@@ -143,29 +146,29 @@ export default function Arena({ fighter1, fighter2 }) {
     };
   }, []);
   
-  if (winner !== null) {
-    return (
-      <div className="arena___result">
-        {winner
-          ? `${winner.name} wins!`
-          : "Draw"}
-      </div>
-    );
-  }
+
   
   return (
-    <div className="arena___root">
-      <StatusBar
-        leftFighter={fighter1State.current}
-        rightFighter={fighter2State.current}
-        timeLeft={timeLeft}
-        settings={settings}
-        />
-      <Fighters
-        firstFighter={fighter1State.current}
-        secondFighter={fighter2State.current}
-        combatTexts={combatTexts}
-        />
-    </div>
+    <>
+      <FightResultModal
+        open={fightFinished}
+        winner={winner}
+        onRestart={onRestart}
+        onBackToMenu={onBackToMenu}
+      />
+      <div className="arena___root">
+        <StatusBar
+          leftFighter={fighter1State.current}
+          rightFighter={fighter2State.current}
+          timeLeft={timeLeft}
+          settings={settings}
+          />
+        <Fighters
+          firstFighter={fighter1State.current}
+          secondFighter={fighter2State.current}
+          combatTexts={combatTexts}
+          />
+      </div>
+    </>
   );
 }
