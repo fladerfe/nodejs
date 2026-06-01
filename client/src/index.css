@@ -109,3 +109,194 @@ code {
   padding: 4px 8px;
   background: var(--code-bg);
 }
+
+/* arena */
+
+.arena___root {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-image: url('../public/arena.jpg');
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.arena___battlefield {
+  display: flex;
+  justify-content: space-around;
+  margin-bottom: 60px;
+}
+
+.arena___right-fighter img {
+  transform: scaleX(-1);
+}
+
+.arena___fighter {
+  position: relative;
+}
+
+.arena___fighter img {
+  height: 480px;
+}
+
+.arena___fight-status {
+  display: flex;
+  margin: 30px;
+  justify-content: center;
+}
+
+.arena___fighter-name {
+  margin: 0 10px;
+  color: black;
+  -webkit-text-fill-color: white;
+  -webkit-text-stroke-width: 1px;
+  font-size: 26px;
+  font-family: 'Arial Black';
+  font-weight: 700;
+}
+
+.arena___fighter-indicator {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  margin: 0 30px;
+}
+
+#left-fighter-indicator,
+#left-fighter-stamina {
+  transform-origin: left center;
+}
+#right-fighter-indicator,
+#right-fighter-stamina { 
+  transform-origin: right center;
+}
+
+.arena___fighter-indicator-left {
+  align-items: start;
+}
+.arena___fighter-indicator-right {
+  align-items: end;
+}
+
+.arena___health-indicator {
+  width: 100%;
+  height: 25px;
+  border: 2px solid;
+  border-radius: 5px;
+  margin: 0 10px;
+  overflow: hidden;
+}
+
+.arena___stamina-indicator {
+  width: 20%;
+  height: 25px;
+  border: 2px solid;
+  border-radius: 5px;
+  margin: 5px 10px 0;
+  overflow: hidden;
+}
+
+.arena___health-bar {
+  height: 100%;
+  width: 100%;
+  background-color: #ebd759;
+}
+
+.arena___stamina-bar {
+  height: 100%;
+  width: 100%;
+  background-color: #ba0303;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.arena___hit-text {
+  position: absolute;
+  font-size: 30px;
+  font-weight: bold;
+  top: 0;
+  text-transform: uppercase;
+  pointer-events: none;
+  animation: float-up 1s ease-out forwards;
+  -webkit-text-stroke: 1px black;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.arena___hit-text-right {
+  right: 0;
+}
+.arena___hit-text-left {
+  left: 0;
+}
+
+.hit {
+  color: white;
+}
+
+.block {
+  color: deepskyblue;
+}
+
+.critical {
+  color: red;
+  font-size: 36px;
+}
+.dodge {
+  color: gold;
+  font-style: italic;
+}
+
+.arena___timer {
+  font-size: 32px;
+  font-weight: bold;
+  color: white;
+  text-shadow: 0 0 10px black;
+}
+
+.arena___stamina-text {
+  opacity: 0;
+  color: white;
+  font-weight: 700;
+}
+
+.arena___stamina-text.ready {
+  opacity: 1;
+  animation: critical-blink 0.8s infinite;
+  color: white;
+  font-weight: bold;
+}
+
+@keyframes float-up {
+  0% {
+      opacity: 1;
+      transform: translateY(0);
+  }
+
+  70% {
+      opacity: 1;
+  }
+
+  100% {
+      opacity: 0;
+      transform: translateY(-40px);
+  }
+}
+
+@keyframes critical-blink {
+    0% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.4;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}

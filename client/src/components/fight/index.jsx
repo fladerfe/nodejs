@@ -4,7 +4,7 @@ import { getFighters } from '../../services/domainRequest/fightersRequest';
 import NewFighter from '../newFighter';
 import Fighter from '../fighter';
 
-export default function Fight() {
+export default function Fight({ onStartFight }) {
     const [fighters, setFighters] = useState([]);
     const [fighter1, setFighter1] = useState(null);
     const [fighter2, setFighter2] = useState(null);
@@ -31,7 +31,17 @@ export default function Fight() {
                 <Fighter selectedFighter={fighter1} onFighterSelect={setFighter1} fightersList={fighter1List} />
                 <Divider orientation="vertical" flexItem />
                 <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', px: 2, pt: 2 }}>
-                    <Button variant="contained" color="secondary" disabled={!fighter1 || !fighter2}>
+                    <Button
+                        variant="contained"
+                        color="secondary"
+                        disabled={!fighter1 || !fighter2}
+                          onClick={() =>
+                            onStartFight({
+                            fighter1,
+                            fighter2,
+                            })
+                        }
+                    >
                         Start Fight
                     </Button>
                 </Box>
