@@ -12,6 +12,11 @@ export default function Arena({ fighter1, fighter2, onBackToMenu, onRestart }) {
     FIGHT_DURATION: 60000,
   }), []);
 
+  const [leftHealth, setLeftHealth] = useState(fighter1.health);
+  const [rightHealth, setRightHealth] = useState(fighter2.health);
+  const [leftCrit, setLeftCrit] = useState(1);
+  const [rightCrit, setRightCrit] = useState(1);
+
   const [winner, setWinner] = useState(null);
   const [combatTexts, setCombatTexts] = useState([]);
   const [fightFinished, setFightFinished] = useState(false);
@@ -47,12 +52,13 @@ export default function Arena({ fighter1, fighter2, onBackToMenu, onRestart }) {
   });
   
   const [timeLeft, setTimeLeft] = useState(settings.FIGHT_DURATION);
-  const startTime = useRef(Date.now());
+  const startTime = useRef(null);
 
   function getWinner() {
-    const p1 = fighter1State.current;
-    const p2 = fighter2State.current;
-    
+    const p1 = fighter1State.current
+    const p2 = fighter2State.current
+
+
     if (p1.currentHealth === p2.currentHealth) return null;
     
     return p1.currentHealth > p2.currentHealth
@@ -60,14 +66,13 @@ export default function Arena({ fighter1, fighter2, onBackToMenu, onRestart }) {
       : fighter2;
   }
   
-  async  function handleFinish() {
+  async function handleFinish() {
     const result = getWinner();
 
     await createFight({
       fighter1: fighter1.id,
       fighter2: fighter2.id,
       winner: result?.id ?? null,
-      date: Date.now(),
       log: fightLog.current
     });
 
@@ -90,6 +95,10 @@ export default function Arena({ fighter1, fighter2, onBackToMenu, onRestart }) {
   }
 
   useEffect(() => {
+    startTime.current = Date.now();
+  }, []);
+
+  useEffect(() => {
     intervalRef.current = setInterval(() => {
       if (!intervalRef.current) return;
       
@@ -103,9 +112,12 @@ export default function Arena({ fighter1, fighter2, onBackToMenu, onRestart }) {
       
       const action1 = applyAction(p1, p2, settings);
       const action2 = applyAction(p2, p1, settings);
-      
-      p2.currentHealth = Math.max(0, p2.currentHealth - action1.damage);
+
       p1.currentHealth = Math.max(0, p1.currentHealth - action2.damage);
+      p2.currentHealth = Math.max(0, p2.currentHealth - action1.damage);
+      
+      setLeftHealth(p1.currentHealth);
+      setRightHealth(p2.currentHealth);
 
       if (action1.damage > 0 || action2.damage > 0) {
         fightLog.current.push({
@@ -121,6 +133,7 @@ export default function Arena({ fighter1, fighter2, onBackToMenu, onRestart }) {
         p1.lastHitTime = time
         if (action1.effect === 'critical') {
           p1.lastCriticalTime = time
+          setLeftCrit(p1.lastCriticalTime)
         }
       }
 
@@ -129,11 +142,12 @@ export default function Arena({ fighter1, fighter2, onBackToMenu, onRestart }) {
         p2.lastHitTime = time
         if (action2.effect === 'critical') {
           p2.lastCriticalTime = time
+          setRightCrit(p2.lastCriticalTime)
         }
       }
 
-      showCombatText(action1.effect, p2.position)
-      showCombatText(action2.effect, p1.position)
+      if (action1.effect) showCombatText(action1.effect, p2.position);
+      if (action2.effect) showCombatText(action2.effect, p1.position);
 
       const isTimeOver = Date.now() - startTime.current >= settings.FIGHT_DURATION;
       const isFightOver =
@@ -178,14 +192,14 @@ export default function Arena({ fighter1, fighter2, onBackToMenu, onRestart }) {
       />
       <div className="arena___root">
         <StatusBar
-          leftFighter={fighter1State.current}
-          rightFighter={fighter2State.current}
+          leftFighter={{...fighter1, currentHealth: leftHealth, lastCriticalTime: leftCrit, position: "left"}}
+          rightFighter={{...fighter2, currentHealth: rightHealth, lastCriticalTime: rightCrit, position: "right"}}
           timeLeft={timeLeft}
           settings={settings}
           />
         <Fighters
-          firstFighter={fighter1State.current}
-          secondFighter={fighter2State.current}
+          firstFighter={{...fighter1, position: "left"}}
+          secondFighter={{...fighter2, position: "right"}}
           combatTexts={combatTexts}
           />
       </div>

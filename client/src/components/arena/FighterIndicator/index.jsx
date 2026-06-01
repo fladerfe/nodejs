@@ -1,5 +1,5 @@
 export default function FighterIndicator({fighter, settings}) {
-  const percent = fighter.currentHealth / fighter.maxHealth;
+  const percent = fighter.currentHealth / fighter.health;
   const staminaProgress = getStaminaProgress(fighter, settings.CRITICAL_INTERVAL);
   
   return (

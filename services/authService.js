@@ -11,6 +11,8 @@ class AuthService {
     }
 
     if (user.password !== data.password) {
+      console.log(user.password, data.password);
+      
       const err = new Error("Invalid password");
       err.status = 400;
       throw err;

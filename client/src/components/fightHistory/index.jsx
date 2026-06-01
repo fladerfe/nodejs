@@ -74,11 +74,6 @@ export default function FightHistory({ onBack }) {
               <Box>
                 {fighter1Name} vs {fighter2Name}
               </Box>
-              <Box sx={{ fontSize: "12px", opacity: 0.7 }}>
-                {fight.date
-                  ? new Date(fight.date).toLocaleString()
-                  : "No date"}
-              </Box>
             </Box>
             <Divider orientation="vertical" flexItem />
             <Box sx={{ textAlign: "right" }}>

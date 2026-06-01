@@ -1,8 +1,9 @@
 import { userRepository } from "../repositories/userRepository.js";
+import { sanitizeUser } from "../utils/sanitizeUser.js";
 
 class UserService {
   getAll() {
-    return userRepository.getAll()
+    return userRepository.getAll().map(sanitizeUser)
   }
 
   getOne(id) {
@@ -13,7 +14,7 @@ class UserService {
       throw err;
     }
 
-    return user
+    return sanitizeUser(user);
   }
 
   create(data) {
@@ -33,7 +34,9 @@ class UserService {
       throw err;
     }
 
-    return userRepository.create(data)
+    const user = userRepository.create(data)
+
+    return sanitizeUser(user)
   }
 
   update(id, data) {
@@ -67,7 +70,7 @@ class UserService {
       }
     }
 
-    return userRepository.update(id, data);
+    return sanitizeUser(userRepository.update(id, data))
   }
 
   delete(id) {
@@ -81,7 +84,7 @@ class UserService {
 
     userRepository.delete(id);
     
-    return user;
+    return sanitizeUser(user);
   }
 
   search(search) {

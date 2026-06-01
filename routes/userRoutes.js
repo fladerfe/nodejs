@@ -35,7 +35,9 @@ router.get(
   responseMiddleware
 );
 
-router.post("/", 
+router.post(
+  "/", 
+  createUserValid,
   (req, res, next) => {
     try {
       res.data = userService.create(req.body);

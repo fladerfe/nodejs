@@ -11,7 +11,7 @@ const messagesTypes = {
 export default function Fighters({firstFighter, secondFighter, combatTexts}) {
   const firstFighterElement = createFighter(firstFighter, combatTexts);
   const secondFighterElement = createFighter(secondFighter, combatTexts);
-
+  
   return (
     <div className="arena___battlefield">
       {firstFighterElement}
@@ -23,7 +23,7 @@ export default function Fighters({firstFighter, secondFighter, combatTexts}) {
 function createFighter(fighter, combatTexts) {
   const positionClassName = fighter.position === 'right' ? 'arena___right-fighter' : 'arena___left-fighter';
   const className =  `arena___fighter ${positionClassName}`
-
+  
   return (
     <div className={className}>
       {combatTexts.filter(item => item.position === fighter.position).map(text => (

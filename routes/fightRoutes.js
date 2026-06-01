@@ -1,6 +1,7 @@
 import { Router } from "express";
 import { fightService } from "../services/fightService.js";
 import { responseMiddleware } from "../middlewares/response.middleware.js";
+import { createFightValid } from "../middlewares/fight.validation.middleware.js";
 
 const router = Router();
 
@@ -34,6 +35,7 @@ router.get(
 
 router.post(
   "/",
+  createFightValid,
   (req, res, next) => {
     try {
       res.data = fightService.create(req.body);
