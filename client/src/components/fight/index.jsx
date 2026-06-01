@@ -4,7 +4,7 @@ import { getFighters } from '../../services/domainRequest/fightersRequest';
 import NewFighter from '../newFighter';
 import Fighter from '../fighter';
 
-export default function Fight({ onStartFight }) {
+export default function Fight({ onStartFight, onShowHistory }) {
     const [fighters, setFighters] = useState([]);
     const [fighter1, setFighter1] = useState(null);
     const [fighter2, setFighter2] = useState(null);
@@ -27,6 +27,14 @@ export default function Fight({ onStartFight }) {
     return (
         <Box sx={{ mt: 4 }}>
             <NewFighter onCreated={onCreate} />
+            <Button 
+                variant="outlined"
+                size="small"
+                sx={{ "margin-top": "20px" }}
+                onClick={onShowHistory}
+            >
+                Fight History
+            </Button>
             <Paper elevation={2} sx={{ width: '70%', mx: 'auto', mt: 3, display: 'flex', alignItems: 'flex-start' }}>
                 <Fighter selectedFighter={fighter1} onFighterSelect={setFighter1} fightersList={fighter1List} />
                 <Divider orientation="vertical" flexItem />
